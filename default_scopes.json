@@ -1,0 +1,29 @@
+{
+  "Admin":{
+    "Account:view": "View user",
+    "Account:edit" : "Edit user",
+    "Account:create": "Create user",
+    "Account:delete" : "Delete user",
+    "Role:view" : "View role",
+    "Role:edit" : "Edit role",
+    "Role:create": "Create role",
+    "Role:update": "Update role",
+    "Profile:view": "View Profile",
+    "Profile:edit": "Edit Profile",
+    "Profile:delete": "Delete Profile"
+  },
+  "Seller": {
+    "Account:view": "View user",
+    "Account:edit": "Edit user",
+    "Role:view": "View role",
+    "Profile:view": "My view Profile",
+    "Profile:update": "Update my Profile"
+  },
+  "User": {
+    "Account:view": "View user",
+    "Account:edit": "Edit user",
+    "Role:view": "View role",
+    "Profile:view": "My view Profile",
+    "Profile:update": "Update my Profile"
+  }
+}
