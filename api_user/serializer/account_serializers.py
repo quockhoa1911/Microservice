@@ -5,7 +5,7 @@ from ..serializer import Profile_serializers,Role_serializers,Profile_write_seri
 
 class Accounts_serializers(serializers.ModelSerializer):
     profile = Profile_serializers()
-    role = Role_serializers()
+    roles = Role_serializers(many=True,read_only=True)
     password = serializers.HiddenField(default=timezone.now)
     class Meta:
         model = Accounts
