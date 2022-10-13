@@ -165,5 +165,8 @@ AUTH_USER_MODEL = 'api_user.accounts'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',# is base decode token
+    ),
+    'DEFAULT_PERMISSION_CLASS':(
+        'api_base.permission.base_permission' #is base permission class
     )
 }

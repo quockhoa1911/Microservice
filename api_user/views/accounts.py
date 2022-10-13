@@ -1,16 +1,23 @@
+
+
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
+
 from ..models import Accounts
 from ..serializer import Accounts_serializers
 from ..services import Accounts_services
+from api_base.permission import Base_Permission
 # Create your views here.
 
 class Accountsviewset(ModelViewSet):
     serializer_class = Accounts_serializers
-    queryset = Accounts.objects.all()
-
+    queryset = Accounts.objects.all().order_by("create_at")
+    # permission_classes = [Base_Permission]
+    scopes_view = {
+        "list":"user:view,shop:view,admin:view"
+    }
     def list(self, request, *args, **kwargs):
         queries = self.get_queryset()
         serializers = Accounts_serializers(many=True,data=queries)

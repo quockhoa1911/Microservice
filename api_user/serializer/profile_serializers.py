@@ -13,4 +13,4 @@ class Profile_write_serializers(serializers.ModelSerializer):
 
     class Meta:
         model = Profiles
-        fields = ['name','gender','age','email','certificate']
+        fields = ['email','certificate']
