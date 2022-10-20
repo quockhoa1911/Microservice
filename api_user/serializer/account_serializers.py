@@ -1,16 +1,16 @@
 from django.utils import timezone
 from rest_framework import serializers
 from ..models import Accounts
-from ..serializer import Profile_serializers,Role_serializers,Profile_write_serializers
+from ..serializer import Profile_serializers,Account_Role_serializers,Role_serializers,Profile_write_serializers
 from ..models import Accounts_Roles,Roles
 
 class Accounts_serializers(serializers.ModelSerializer):
     profile = Profile_serializers()
-    roles = Role_serializers(many=True,read_only=True)
+    account_role = Account_Role_serializers(many=True,read_only=True)
     password = serializers.HiddenField(default=timezone.now)
     class Meta:
         model = Accounts
-        fields = "__all__"
+        fields = ['id','username','password','profile','account_role']
 
 class Accounts_write_serializers(serializers.ModelSerializer):
     profile = Profile_write_serializers()

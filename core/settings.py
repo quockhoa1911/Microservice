@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-xvrjx%sl4np*b$ajn4_(%l3q(@7ic72=r8a6&3n^gn+pdw4suo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -163,8 +163,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'api_user.accounts'
 
 REST_FRAMEWORK = {
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',# is base decode token
+    # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',# is base decode token
+        'api_base.base_authentication.Base_Authentication',# is base decode token
     ),
     'DEFAULT_PERMISSION_CLASS':(
         'api_base.permission.base_permission' #is base permission class
