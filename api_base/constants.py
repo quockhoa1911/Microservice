@@ -1,3 +1,4 @@
-Base_Constant = {
-    "checkurl":"login"
+Base_Constant_Ignore_Token = {
+    "checklog":"login",
+    "register":"register_with_roles",
 }

@@ -1,6 +1,7 @@
 from django.utils.module_loading import import_string
 from rest_framework.permissions import BasePermission
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from ..constants import Base_Constant_Ignore_Token
 jwt_authenticator = JWTAuthentication()
 class Base_Permission(BasePermission):
 
@@ -20,6 +21,9 @@ class Base_Permission(BasePermission):
         return token.payload
 
     def has_permission(self, request, view):
+        if view.action in Base_Constant_Ignore_Token.values():
+            return True
+
         scopes_token = request.auth.payload.get("scopes")
         list_scopes_token = scopes_token.split(",")
         scopes_view = view.scopes_view
