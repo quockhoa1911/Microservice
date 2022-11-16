@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from api_user.models import Roles, Profiles, Accounts
 from api_user.serializer import Role_serializers,Accounts_write_serializers
+from django.db.models import Q
 
 
 class Accounts_services:
@@ -13,37 +14,26 @@ class Accounts_services:
             role = Roles.objects.filter(name=pk)
             if not role.exists():
                 return Response(data="Role not in database",status=status.HTTP_400_BAD_REQUEST)
-
             role = role.first()
-            username = data.get('username',None)
-            profile = data.get('profile',None)
-            email = profile.get('email',None)
-            certificate = profile.get('certificate',None)
-            # if email is not None:
-            #     profile_queries = Profiles.objects.filter(email=email)
-            #     if profile_queries.exists():
-            #         account = Accounts.objects.filter(profile=profile_queries.first().id).exists()
-            #         if account.count() > 1:
-            #             for a in account:
-            #                 if a.username == username:
-            #                     return Response(data="Username and email is Already in data,"
-            #                                      " if you forget account please authenticate accounts ",
-            #                                     status=status.HTTP_400_BAD_REQUEST)
-            #         else:
-            #             if account.count() == 1:
-            #                 if account.username == username:
-            #                     return Response(data="Username and email is Already in data,"
-            #                                          " if you forget account please authenticate accounts ",
-            #                                     status=status.HTTP_400_BAD_REQUEST)
-            #
-            # if certificate is not None:
-            #     if Profiles.objects.filter(certificate=certificate).exists():
-            #         return Response(data="Certificate is already in data", status=status.HTTP_400_BAD_REQUEST)
+            username = data.get("username",None)
+            password = data.get("password",None)
+            email = data.get("email",None)
+            certificate = data.get('certificate',None)
+            if username and password:
+                if Accounts.objects.filter(username=username).exists():
+                    return Response(data="username already in database", status=status.HTTP_400_BAD_REQUEST)
+            if email and certificate:
+               if Profiles.objects.filter(Q(email=email) | Q(certificate=certificate)).exists():
+                   return Response(data="email or cerificate already in database",status=status.HTTP_400_BAD_REQUEST)
 
-            if Accounts.objects.filter(username=username).exists():
-                return Response(data="username already in database",status=status.HTTP_400_BAD_REQUEST)
-
-            data['role'] = role.id.hex
+            data['roles'] = role.id.hex
+            data['profile'] = {
+                "email": email,
+                "certificate":certificate
+            }
+            data.pop("email")
+            data.pop("certificate")
+            data['password'] = make_password(password)
             accountserializer = Accounts_write_serializers(data=data)
             if accountserializer.is_valid(raise_exception=True):
                 accountserializer.save()
