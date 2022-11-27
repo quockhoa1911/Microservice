@@ -14,10 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from rest_framework.routers import SimpleRouter
-from api_user.views import Accountsviewset
+from api_user.views import Accountsviewset,Rolesviewset,Paymentsviewset
 
 router = SimpleRouter(trailing_slash=True)
 
-router.register(r'',Accountsviewset,basename='user')
+router.register(r'users',Accountsviewset,basename='users')
+router.register(r'roles',Rolesviewset,basename='roles')
+router.register(r'payments',Paymentsviewset,basename='payments')
 
 urlpatterns = router.urls
