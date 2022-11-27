@@ -5,8 +5,10 @@ from pika.exchange_type import ExchangeType
 
 # parameters = pika.ConnectionParameters(host='localhost',heartbeat=600,blocked_connection_timeout=300)
 
-parameters = pika.URLParameters(url='amqps://muyiopsb:4R6fvWb-BVHIc2cqTZDWY-5XQjKkn05o@armadillo.rmq.cloudamqp.com/muyiopsb')
-# parameters = pika.URLParameters(url='amqps://fkvbbddc:ALJpxxB4zIfIpYbwN2DhTqFPpzIcc46R@armadillo.rmq.cloudamqp.com/fkvbbddc')
+# parameters = pika.URLParameters(url='amqps://muyiopsb:4R6fvWb-BVHIc2cqTZDWY-5XQjKkn05o@armadillo.rmq.cloudamqp.com/muyiopsb')
+
+parameters = pika.URLParameters(url='amqps://fkvbbddc:ALJpxxB4zIfIpYbwN2DhTqFPpzIcc46R@armadillo.rmq.cloudamqp.com/fkvbbddc')
+
 connection = pika.BlockingConnection(parameters=parameters)
 
 channel = connection.channel()

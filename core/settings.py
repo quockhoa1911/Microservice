@@ -13,11 +13,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -80,7 +80,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-#redis config
+# redis config
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -95,13 +95,12 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 CACHE_TTL = 60 * 1
 
-#mail config
+# mail config
 EMAIL_ADDRESS = os.getenv('email')
 EMAIL_PASSWORD = os.getenv('password')
-#tunnel config
+# tunnel config
 DOMAIN_NAME = os.getenv('domain')
 PORT_SERVER = 8000
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -112,8 +111,8 @@ DATABASES = {
         'NAME': os.getenv('db_name'),
         'USER': os.getenv('db_user'),
         'PASSWORD': os.getenv('db_password'),
-        'HOST' : os.getenv('db_host'),
-        'PORT' : os.getenv('db_port'),
+        'HOST': os.getenv('db_host'),
+        'PORT': os.getenv('db_port'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         },
@@ -141,7 +140,6 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -160,7 +158,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -173,7 +170,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -192,10 +188,10 @@ REST_FRAMEWORK = {
     #     'rest_framework_simplejwt.authentication.JWTAuthentication',# DRF
     # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'api_base.authentication.Base_Authentication',# is base decode token
+        'api_base.authentication.Base_Authentication',  # is base decode token
     ),
-    'DEFAULT_PERMISSION_CLASSES':(
-        'api_base.permission.Base_Permission', #is base permission class
+    'DEFAULT_PERMISSION_CLASSES': (
+        'api_base.permission.Base_Permission',  # is base permission class
     ),
     'DEFAULT_PAGINATION_CLASS': 'api_base.pagination.Base_CustomPagination',
 }
