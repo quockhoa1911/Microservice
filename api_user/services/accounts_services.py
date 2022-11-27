@@ -12,7 +12,6 @@ from api_base.services import Multi_Thread
 from email_template.html_parse import Htmlfilter
 
 from rabbit_mq import publish
-
 class Accounts_services:
     @classmethod
     def register_with_roles(cls,pk,data,*args,**kwargs):
@@ -34,22 +33,22 @@ class Accounts_services:
 
             data['roles'] = role.id.hex
             data['password'] = make_password(password)
-            accountserializer = Accounts_write_serializers(data=data)
-            if accountserializer.is_valid(raise_exception=True):
-                account = accountserializer.save()
+            account_serializer = Accounts_write_serializers(data=data)
+            if account_serializer.is_valid(raise_exception=True):
+                account = account_serializer.save()
 
                 multi_thread = Multi_Thread(html=Htmlfilter.parse_html_text(),target=Send_Mail_Service.send_mail,
                                             content_main_body='Sign up success welcome to shopbbe,website:https://shopbee.loca.lt/',
                                             header='Sign up success!!!',
                                             from_email='',to_emails=[data['profile'].get('email')])
                 multi_thread.start()
-                accountserializers = Accounts_serializers(instance=account)
+                account_serializers = Accounts_serializers(instance=account)
                 publish(method='register',body=json.dumps(
                     {
-                        'message':json.dumps(accountserializers.data)
+                        'message':json.dumps(account_serializers.data)
                     }),routing_key='Register'+pk.title()+'Event')
 
-                return Response(data=accountserializer.data,status=status.HTTP_200_OK)
+                return Response(data=account_serializer.data,status=status.HTTP_200_OK)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @classmethod
