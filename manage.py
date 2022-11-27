@@ -2,13 +2,14 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+from django.conf import settings
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
     try:
         from django.core.management import execute_from_command_line
+        # os.system(f"lt --port {settings.PORT_SERVER} --subdomain {settings.DOMAIN_NAME}")
     except ImportError as exc:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "

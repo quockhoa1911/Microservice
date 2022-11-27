@@ -11,5 +11,6 @@ class MyTokenSerializers(serializers.Serializer):
             token['scopes'] = scopes.scope_value
         return {
             "access_token" : str(token.access_token),
-            "refresh_token" : str(token)
+            "refresh_token" : str(token),
+            "role" : str(role.name)
         }

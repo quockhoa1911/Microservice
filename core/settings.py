@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xvrjx%sl4np*b$ajn4_(%l3q(@7ic72=r8a6&3n^gn+pdw4suo'
+SECRET_KEY = os.getenv('secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,6 +79,28 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+#redis config
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+CACHE_TTL = 60 * 1
+
+#mail config
+EMAIL_ADDRESS = os.getenv('email')
+EMAIL_PASSWORD = os.getenv('password')
+#tunnel config
+DOMAIN_NAME = os.getenv('domain')
+PORT_SERVER = 8000
 
 
 # Database
@@ -167,12 +189,18 @@ AUTH_USER_MODEL = 'api_user.accounts'
 
 REST_FRAMEWORK = {
     # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',# is base decode token
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',# DRF
     # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'api_base.authentication.Base_Authentication',# is base decode token
     ),
-    'DEFAULT_PERMISSION_CLASS':(
-        'api_base.permission.Base_Permission' #is base permission class
-    )
+    'DEFAULT_PERMISSION_CLASSES':(
+        'api_base.permission.Base_Permission', #is base permission class
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'api_base.pagination.Base_CustomPagination',
 }
+
+STATIC_DIR = BASE_DIR / 'static'
+MEDIA_DIR = BASE_DIR / 'media'
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/media/'
