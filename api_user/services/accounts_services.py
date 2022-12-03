@@ -5,7 +5,7 @@ from django.core.files.storage import FileSystemStorage
 from datetime import datetime
 import json
 from api_user.models import Roles, Profiles, Accounts
-from api_user.serializer import Role_serializers,Accounts_write_serializers,Accounts_serializers
+from api_user.serializer import Accounts_write_serializers,Accounts_serializers
 from django.db.models import Q
 from api_base.services import Send_Mail_Service
 from api_base.services import Multi_Thread

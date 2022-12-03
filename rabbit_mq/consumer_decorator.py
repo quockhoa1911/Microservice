@@ -1,6 +1,7 @@
 import json
 from functools import wraps
 from consumer_service import Consumer_service
+
 def consumer_decorator(func):
     @wraps(func)
     def inner(*args,**kwargs):

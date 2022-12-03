@@ -1,7 +1,9 @@
 import pika
 from pika.exchange_type import ExchangeType
-
-url_string = 'amqps://muyiopsb:4R6fvWb-BVHIc2cqTZDWY-5XQjKkn05o@armadillo.rmq.cloudamqp.com/muyiopsb'
+from dotenv import load_dotenv
+import os
+load_dotenv()
+url_string = os.getenv('url_exchange_history')
 
 parameters = pika.URLParameters(url=url_string)
 

@@ -1,9 +1,14 @@
 import json
 import pika
 from pika.exchange_type import ExchangeType
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 # parameters = pika.ConnectionParameters(host='localhost', heartbeat=600, blocked_connection_timeout=300)
-parameters = pika.URLParameters(url='amqps://muyiopsb:4R6fvWb-BVHIc2cqTZDWY-5XQjKkn05o@armadillo.rmq.cloudamqp.com/muyiopsb')
+
+url_string = os.getenv('url_exchange_history')
+parameters = pika.URLParameters(url=url_string)
 
 connection = pika.BlockingConnection(parameters=parameters)
 
