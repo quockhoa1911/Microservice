@@ -18,12 +18,12 @@ class Paymentsviewset(ModelViewSet):
     }
 
     def list(self, request, *args, **kwargs):
-        # if 'list_payment' in cache:
-        #     print('get data in redis')
-        #     return Response(data=cache.get('list_payment'), status=status.HTTP_200_OK)
+        if 'list_payment' in cache:
+            print('get data in redis')
+            return Response(data=cache.get('list_payment'), status=status.HTTP_200_OK)
 
         payments = self.get_queryset()
         serializers = self.get_serializer(instance=payments,many=True)
-        # cache.set('list_payment',serializers.data)
+        cache.set('list_payment',serializers.data)
         print('set data to redis')
         return Response(data=serializers.data,status=status.HTTP_200_OK)

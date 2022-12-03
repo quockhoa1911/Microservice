@@ -13,27 +13,24 @@ class Accounts_serializers(serializers.ModelSerializer):
         fields = ['id','username','password','profile','account_role']
 
 class Accounts_write_serializers(serializers.ModelSerializer):
-    profile = Profile_write_serializers(write_only=True)
+    # add extra field pass in to validate data
+    profile = serializers.DictField(write_only=True)
+    roles = serializers.CharField(write_only=True)
+
     class Meta:
         model = Accounts
         fields = ['username','password','roles','profile']
-    def to_internal_value(self, data):
-        #call before valid() field call, is hookpoint
-        #use pre-proccesing data
-        global Role_write
-        global Profile_write
-        Profile_write = data.get('profile')
-        Role_write = data.get("roles")
-        return super().to_internal_value(data) #missing value not in fields in database
 
     def create(self, validated_data):
         account_role = {}
-        profile = Profiles.objects.create(**Profile_write)
+        profile_write = validated_data.pop('profile')
+        role_write = validated_data.pop('roles')
+        profile = Profiles.objects.create(**profile_write)
         validated_data['profile'] = profile
         # save account
         accountinstance = super().create(validated_data)
         account_role["account"] = accountinstance
-        account_role["role"] = Roles.objects.filter(id=Role_write).first()
+        account_role["role"] = Roles.objects.filter(id=role_write).first()
         Accounts_Roles.objects.create(**account_role)
         #save role
         return accountinstance

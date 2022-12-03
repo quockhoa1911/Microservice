@@ -1,5 +1,3 @@
-import json
-
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
@@ -104,7 +102,8 @@ class Accountsviewset(ModelViewSet):
     def get_list_shop(self,request,*args,**kwargs):
         account = Accounts.objects.filter(Q(account_role__is_active=True) & Q(account_role__role__name='shop'))
         if account.exists():
-            serializers = Accounts_serializers(instance=account,many=True)
+            page = self.paginate_queryset(account)
+            serializers = Accounts_serializers(instance=page,many=True)
             return Response(data=serializers.data,status=status.HTTP_200_OK)
         return Response(data='No shop in data',status=status.HTTP_400_BAD_REQUEST)
 

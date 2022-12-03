@@ -1,28 +1,26 @@
 import json
-
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from ..serializer import MyTokenSerializers
-from api_user.models import Accounts, Accounts_Roles, Roles, Payment_type
-from api_user.serializer import Accounts_serializers, Account_Role_serializers
+from api_user.models import Accounts, Accounts_Roles
+from api_user.serializer import Account_Role_serializers
 from django.contrib.auth.hashers import check_password, make_password
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db.models import Q
-
-jwt_authenticator = JWTAuthentication()
-
 from api_base.services import Multi_Thread, Send_Mail_Service
 import string
 import random
 from email_template.html_parse import Htmlfilter
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+jwt_authenticator = JWTAuthentication()
+
 # Rabbitmq
 from rabbit_mq import publish, publish_history
 
 
-# if import function in file, python complite the file and use function for hanlde
+# if import function in file, python complete the file and use function for handle
 
 # Create your views here.
 
@@ -59,11 +57,16 @@ class LoginoutViews(ModelViewSet):
                                             from_email='',
                                             to_emails=[account.profile.email])
                 multi_thread.start()
-                body = {
-                    "account": account.id.hex,
-                    "descriptions": f"action:{self.action},role:{pk}"
-                }
-                publish_history(method=self.action, body=json.dumps(body), routing_key=self.action)
+
+                try:
+                    body = {
+                        "account": account.id.hex,
+                        "descriptions": f"action:{self.action},role:{pk}"
+                    }
+                    publish_history(method=self.action, body=json.dumps(body), routing_key=self.action)
+                except:
+                    print('exception publish history')
+
                 return Response(serializer.get_token(account_role.account, account_role.role),
                                 status=status.HTTP_200_OK)
             return Response('not account in database', status=status.HTTP_400_BAD_REQUEST)

@@ -1,8 +1,8 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
 from api_base.constants import Base_Constant_Ignore_Token
-class Base_Authentication(JWTAuthentication):
 
+class Base_Authentication(JWTAuthentication):
     def authenticate(self, request):
         check_continue = False
         header = request.META.get("HTTP_AUTHORIZATION",None)

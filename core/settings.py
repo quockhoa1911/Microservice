@@ -84,8 +84,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": f"redis://{os.getenv('username_redis')}@{os.getenv('url_redis')}",
         "OPTIONS": {
+            "PASSWORD": os.getenv('password_redis'),
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
